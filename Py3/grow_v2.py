@@ -4,6 +4,7 @@ import random
 import math
 import datetime
 import os
+import time
 
 
 def take_step(x, y):
@@ -97,11 +98,13 @@ if __name__=='__main__':
         N = args.particles
         print()
         agg = read_agg() if os.path.exists('agg.txt') else grow(npart=N)
+        start_time = time.time()
         for i in range(M):
             agg = grow(agg,npart=N) # create the aggregate
             show_progress(i + 1, M)
         save_agg(agg)
         print()
-        print("Grow finished!")
+        print("")
+        print(f"Grow finished!\nExecution time: {time.time() - start_time:.2f} seconds")
     except ValueError:
         print("Please enter correct numbers for M and N")
