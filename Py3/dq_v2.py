@@ -8,8 +8,6 @@ import time
 
 def calculate_mass_list(agg, rl):
     """Calculate the mass list with given r list."""
-    # i = random.randint(0, len(agg) - 1)  # init a random pivot point
-    # c = agg.keys()[i]  # get its position
     random_coord = random.choice(list(agg.keys()))
     pos = np.array(list(agg.keys()))  # get position of all points
     dist = ((random_coord[0] - pos[:, 0]) ** 2 + (random_coord[1] - pos[:, 1]) ** 2) ** 0.5  # calculate ditance
@@ -19,6 +17,7 @@ def calculate_mass_list(agg, rl):
     dist = dist[~closest]  # discard too close (maybe save little time)
 
     r = np.sort(dist)
+    # print(r)
     m = m0 + np.arange(len(r))
     ml = np.interp(rl, r, m)  # calculate mass for all r limits
     return ml
@@ -67,20 +66,7 @@ def save_dq(dq, file='Dq.txt'):
     """
     with open(file, 'w') as f:
         for elm in dq:
-            # save values comma separated, so it will be easy to read from file
-            f.write(f"{','.join([str(num) for num in elm])}\n")
-
-
-def read_dq(file='Dq.txt'):
-    """
-    Read Dq from .txt and return list
-    """
-    Dq = []
-    with open(file) as f:
-        for line in f:
-            Dq_i = [np.float64(num) for num in line.split(',')]
-            Dq.append(Dq_i)
-    return Dq
+            f.write(f"{elm}\n") # x,y,index
 
 
 def show_progress(current_step, overall):
@@ -88,11 +74,9 @@ def show_progress(current_step, overall):
     Show grow progress in percentage
     """
     perc = (current_step/overall)*100
-    # print()
     print(f"Calculation is in progress...{perc:.2f}%", end="\r")
 
-
-if __name__ == '__main__':
+if __name__=='__main__':
     try:
         argparser = argparse.ArgumentParser()
         argparser.add_argument('-r', '--replications', required=True, type=int, help="Number of replications")

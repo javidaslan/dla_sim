@@ -1,3 +1,4 @@
+import argparse
 import pickle
 import random
 import math
@@ -88,8 +89,12 @@ def show_progress(current_step, overall):
 
 if __name__=='__main__':
     try:
-        M = int(input("Enter number of replications (M): "))
-        N = int(input("Enter initial number of particles (N): "))
+        argparser = argparse.ArgumentParser()
+        argparser.add_argument('-r', '--replications', required=True, type=int, help="Number of replications")
+        argparser.add_argument('-p', '--particles', required=True, type=int, help="Number of pivot points")
+        args = argparser.parse_args()
+        M = args.replications
+        N = args.particles
         print()
         agg = read_agg() if os.path.exists('agg.txt') else grow(npart=N)
         for i in range(M):
